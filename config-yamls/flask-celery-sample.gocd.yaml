@@ -55,7 +55,7 @@ pipelines:
                 command: /bin/bash
                 arguments:
                 - -c
-                - kubectl kustomize kustomize
+                - kubectl create ns flask-celery-sample && kubectl kustomize kustomize || kubectl kustomize kustomize
     - deploy:
         jobs:
           kustomize-apply:
