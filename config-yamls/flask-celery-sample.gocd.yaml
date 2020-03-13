@@ -35,7 +35,7 @@ pipelines:
                 arguments:
                 - -c
                 - docker build -t docker.io/sucymanbaravan/flask-celery-sample:latest . 
-  deploy-staging:
+  deploy:
     group: flask-celery-sample
     display_order: 2
     materials:
@@ -46,7 +46,7 @@ pipelines:
       github:
         git: https://github.com/vinicyusmacedo/flask-celery-sample.git
     stages:
-    - dry-run-deploy-staging:
+    - dry-run-deploy:
         jobs:
           kustomize-staging:
             elastic_profile_id: kubectl-agent
@@ -56,9 +56,9 @@ pipelines:
                 arguments:
                 - -c
                 - kubectl kustomize kustomize
-    - deploy-staging:
+    - deploy:
         jobs:
-          kustomize-apply-staging:
+          kustomize-apply:
             elastic_profile_id: kubectl-agent
             tasks:
             - exec: 
