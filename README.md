@@ -74,7 +74,7 @@ kubectl apply -f gocd-deploy-rbac.yaml
 
 ## 6. Run deploy
 
-You can trigger a deploy by either clicking the Play button on the pipeline, which can be found on the GoCD Dashboard, or push some changes to the flask-celery-sample repo.
+You can trigger a deploy by either clicking the Play button on the pipeline, which can be found on the GoCD Dashboard, or by pushing some changes to the flask-celery-sample repo.
 
 To get the flask-celery-sample IP, run:
 
