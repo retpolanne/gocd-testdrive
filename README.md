@@ -28,3 +28,20 @@ Then follow the steps shown to get the public ingress IP.
 Follow this [guide](https://github.com/helm/charts/tree/master/stable/gocd#ssh-keys-1) from the official Helm chart.
 
 ## 4. Config pipelines, elastic agent profiles and Dockerhub
+
+```sh
+# Use the server IP you got on the step 2
+export SERVER_IP=
+# Create elastic agent profiles
+./create-profiles.sh $SERVER_IP
+# Add config repos
+./add-config-repos.sh $SERVER_IP
+# Add dockerhub
+./add-dockerhub.sh $SERVER_IP docker.io username "password"
+```
+
+## 5. Create gocd-deploy service account
+
+```sh
+kubectl apply -f gocd-deploy-rbac.yaml
+```

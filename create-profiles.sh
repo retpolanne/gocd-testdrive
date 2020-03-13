@@ -3,7 +3,7 @@
 GO_SERVER=$1
 echo "Creating dind-agent"
 curl  "$GO_SERVER/go/api/elastic/profiles" \
-      -H 'Accept: application/vnd.go.cd+json' \
+      -H 'Accept: application/vnd.go.cd.v2+json' \
       -H 'Content-Type: application/json' \
       -X POST -d '{
         "id": "dind-agent",
@@ -29,7 +29,7 @@ curl  "$GO_SERVER/go/api/elastic/profiles" \
       }'
 echo "Creating kubectl-agent"
 curl  "$GO_SERVER/go/api/elastic/profiles" \
-      -H 'Accept: application/vnd.go.cd+json' \
+      -H 'Accept: application/vnd.go.cd.v2+json' \
       -H 'Content-Type: application/json' \
       -X POST -d '{
         "id": "kubectl-agent",
@@ -55,7 +55,7 @@ curl  "$GO_SERVER/go/api/elastic/profiles" \
       }'
 echo "Creating python-agent"
 curl  "$GO_SERVER/go/api/elastic/profiles" \
-      -H 'Accept: application/vnd.go.cd+json' \
+      -H 'Accept: application/vnd.go.cd.v2+json' \
       -H 'Content-Type: application/json' \
       -X POST -d '{
         "id": "python-agent",

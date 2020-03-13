@@ -1,12 +1,12 @@
 #!/bin/bash
 
 GO_SERVER=$1
-REGISTRY_URI=$2
+REGISTRY_URL=$2
 REGISTRY_USER=$3
 REGISTRY_PASS=$4
 
 curl  "$GO_SERVER/go/api/admin/artifact_stores" \
-      -H 'Accept: application/vnd.go.cd+json' \
+      -H 'Accept: application/vnd.go.cd.v1+json' \
       -H 'Content-Type: application/json' \
       -X POST -d '{
 	  "id": "dockerhub",

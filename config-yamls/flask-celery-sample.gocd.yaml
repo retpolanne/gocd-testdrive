@@ -1,0 +1,68 @@
+format_version: 9
+pipelines:
+  preflight:
+    group: flask-celery-sample
+    display_order: 1
+    materials:
+      github:
+        git: https://github.com/vinicyusmacedo/flask-celery-sample.git
+    stages:
+    - test:
+        jobs:
+          test:
+            elastic_profile_id: python-agent
+            tasks:
+            - exec:
+                command: /bin/bash
+                arguments:
+                - -c
+                - make install && make test
+    - build:
+        jobs:
+          build-image:
+            elastic_profile_id: dind-agent
+            artifacts:
+            - external:
+                id: flask-celery-sample
+                store_id: dockerhub
+                configuration:
+                  options:
+                    Image: docker.io/sucymanbaravan/flask-celery-sample
+                    Tag: latest
+            tasks:
+            - exec:
+                command: /bin/bash
+                arguments:
+                - -c
+                - docker build -t docker.io/sucymanbaravan/flask-celery-sample:latest . 
+  deploy-staging:
+    group: flask-celery-sample
+    display_order: 2
+    materials:
+      preflight-pipe:
+        pipeline: preflight
+        stage: build
+        name: preflight
+      github:
+        git: https://github.com/vinicyusmacedo/flask-celery-sample.git
+    stages:
+    - dry-run-deploy-staging:
+        jobs:
+          kustomize-staging:
+            elastic_profile_id: kubectl-agent
+            tasks:
+            - exec: 
+                command: /bin/bash
+                arguments:
+                - -c
+                - kubectl kustomize kustomize
+    - deploy-staging:
+        jobs:
+          kustomize-apply-staging:
+            elastic_profile_id: kubectl-agent
+            tasks:
+            - exec: 
+                command: /bin/bash
+                arguments:
+                - -c
+                - kubectl apply -k kustomize

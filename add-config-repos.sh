@@ -3,7 +3,7 @@
 GO_SERVER=$1
 
 curl  "$GO_SERVER/go/api/admin/config_repos" \
-      -H 'Accept: application/vnd.go.cd+json' \
+      -H 'Accept: application/vnd.go.cd.v2+json' \
       -H 'Content-Type: application/json' \
       -X POST -d '{
 	  "id": "gocd-testdrive",
@@ -20,7 +20,7 @@ curl  "$GO_SERVER/go/api/admin/config_repos" \
 	  "configuration": [
 	    {
 	      "key": "file_pattern",
-	      "value": "config-yamls"
+	      "value": "config-yamls/*"
 	    }
 	  ]
 	}'
