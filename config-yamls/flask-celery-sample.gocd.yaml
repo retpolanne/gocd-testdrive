@@ -35,7 +35,7 @@ pipelines:
                 arguments:
                 - -c
                 - docker build -t docker.io/sucymanbaravan/flask-celery-sample:latest . 
-  deploy:
+  deploy-staging:
     group: flask-celery-sample
     display_order: 2
     materials:
@@ -48,7 +48,38 @@ pipelines:
     stages:
     - dry-run-deploy:
         jobs:
-          kustomize-staging:
+          kustomize-dryrun:
+            elastic_profile_id: kubectl-agent
+            tasks:
+            - exec: 
+                command: /bin/bash
+                arguments:
+                - -c
+                - kubectl create ns flask-celery-sample-staging && kubectl kustomize kustomize || kubectl kustomize kustomize
+    - deploy:
+        jobs:
+          kustomize-apply:
+            elastic_profile_id: kubectl-agent
+            tasks:
+            - exec: 
+                command: /bin/bash
+                arguments:
+                - -c
+                - kubectl apply -k kustomize -n flask-celery-sample-staging
+  deploy-prod:
+    group: flask-celery-sample
+    display_order: 3
+    materials:
+      preflight-pipe:
+        pipeline: preflight
+        stage: build
+        name: preflight
+      github:
+        git: https://github.com/vinicyusmacedo/flask-celery-sample.git
+    stages:
+    - dry-run-deploy:
+        jobs:
+          kustomize-dryrun:
             elastic_profile_id: kubectl-agent
             tasks:
             - exec: 
@@ -65,4 +96,4 @@ pipelines:
                 command: /bin/bash
                 arguments:
                 - -c
-                - kubectl apply -k kustomize
+                - kubectl apply -k kustomize -n flask-celery-sample
